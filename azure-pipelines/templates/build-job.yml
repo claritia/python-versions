@@ -5,6 +5,13 @@ jobs:
     name: Azure Pipelines
     vmImage: $(VmImage)
   steps:
+  # Temporary workaround until AGENT_TOOLSDIRECTORY is not set properly on Hosted Ubuntu 20.04 image
+  - bash: |
+      echo '##vso[task.setvariable variable=AGENT_TOOLSDIRECTORY]/opt/hostedtoolcache'
+      mkdir -p /opt/hostedtoolcache
+    displayName: 'set AGENT_TOOLSDIRECTORY variable'
+    condition: eq(variables['Platform'], 'linux-20.04')
+
   - checkout: self
     submodules: true
     
